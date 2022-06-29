@@ -120,6 +120,6 @@ class Queue
     {
         static::$queue = collect(Cookier::get('notifier', []))
             ->map(fn($pixel) => new QueueItem($pixel))
-            ->toArray();
+            ->all();
     }
 }
