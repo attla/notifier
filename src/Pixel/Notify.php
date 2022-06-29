@@ -236,4 +236,14 @@ class Notify
     {
         $this->queue();
     }
+
+    /**
+     * Alias of queue
+     *
+     * @return void
+     */
+    public function send(): void
+    {
+        $this->queue();
+    }
 }
