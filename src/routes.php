@@ -6,6 +6,9 @@ Route::group([
     'as'            => 'notifier.',
     'prefix'        => config('notifier.path', '/notifier'),
     'namespace'     => 'Attla\\Notifier\\Controllers',
+    'middleware'    => [
+        'web',
+    ],
 ], function () {
     Route::group([
         'as'         => 'pixel.',

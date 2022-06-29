@@ -51,8 +51,8 @@ class PixelController extends Controller
         );
 
         try {
-            $request->p && $request->payload = $request->p;
-            $request->validate([
+            $request->p && $request['payload'] = $request->p;
+            $this->validate($request, [
                 'id' => 'required|string',
                 'payload' => 'required|string',
             ]);
