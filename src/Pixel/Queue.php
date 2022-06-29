@@ -91,6 +91,7 @@ class Queue
     {
         return static::getAvailable()
             ->filter(fn(QueueItem $pixel) => $pixel->next <= time())
+            ->map(fn(QueueItem $pixel) => $pixel->pixel)
             ->toArray();
     }
 
