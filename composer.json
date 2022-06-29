@@ -1,0 +1,37 @@
+{
+    "name": "attla/notifier",
+    "description": "Dynamic notifications between applications",
+    "keywords": [
+        "attla",
+        "sso",
+        "same-sign-on",
+        "cross-origin-notifications",
+        "notifications",
+        "notifier",
+        "notify"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lucas Nicolau",
+            "email": "lucas@octha.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Attla\\Notifier\\": "src/"
+        }
+    },
+    "extra": {
+        "attla": {
+            "providers": [
+                "Attla\\Notifier\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
