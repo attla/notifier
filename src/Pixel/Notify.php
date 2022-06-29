@@ -203,7 +203,7 @@ class Notify
                     ->encode(),
         ]);
 
-        return $this->endpoint . $params;
+        return $this->endpoint . '?' . $params;
     }
 
     /**
