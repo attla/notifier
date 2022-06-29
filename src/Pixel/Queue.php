@@ -102,14 +102,16 @@ class Queue
      */
     public static function store()
     {
-        return Cookier::set(
-            'notifier',
-            Jwt::payload(
-                static::getAvailable()
-                    ->toArray()
-            )->encode(),
-            5256000
-        );
+        if ($queue = static::getAvailable()->toArray()) {
+            Cookier::set(
+                'notifier',
+                Jwt::payload($queue)
+                    ->encode(),
+                5256000
+            );
+        } else {
+            Cookier::forget('notifier');
+        }
     }
 
     /**

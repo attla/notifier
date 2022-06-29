@@ -4,6 +4,7 @@ namespace Attla\Notifier\Middlewares;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Attla\Notifier\Pixel\Queue;
 use Illuminate\Http\JsonResponse;
 use Attla\Notifier\Pixel\Injector;
 
@@ -19,6 +20,7 @@ class InjectPixelNotifier
     public function handle(Request $request, \Closure $next)
     {
         $response = $next($request);
+        Queue::store();
 
         if (
             $request->getMethod() === Request::METHOD_GET &&
