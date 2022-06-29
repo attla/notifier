@@ -48,14 +48,8 @@ class Notify
      */
     protected int $backoff;
 
-    /**
-     * Create a new pixel notifier instance
-     *
-     * @return void
-     */
-    public function __construct()
+    private function __construct()
     {
-        return $this->create();
     }
 
     /**
@@ -95,7 +89,7 @@ class Notify
      */
     public function endpoint(string $endpoint): self
     {
-        $this->endpoint = trim(trim($endpoint), '/') . '/';
+        $this->endpoint = trim(trim($endpoint), '/');
         return $this;
     }
 
