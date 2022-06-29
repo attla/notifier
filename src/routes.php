@@ -14,6 +14,6 @@ Route::group([
     ], function () {
         Route::name('tried')->get('/tried/{id?}', 'tried');
         Route::name('unqueue')->get('/unqueue/{id?}', 'unqueue');
-        Route::name('listen')->get('/listen', 'listen');
+        Route::name('listen')->get('/', 'listen');
     });
 });
