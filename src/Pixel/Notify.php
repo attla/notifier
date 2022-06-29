@@ -67,10 +67,10 @@ class Notify
     {
         $config = config();
         $pixel = new static();
-        $pixel->secret($config->get('encrypt.secret', ''));
         $notifier = $config->get('notifier', []);
 
-        $pixel->endpoint($notifier['endpoint'] ?? '');
+        $pixel->endpoint($notifier['server']['endpoint'] ?? '');
+        $pixel->secret($notifier['server']['secret'] ?? '');
         $pixel->tries($notifier['tries'] ?? 3);
         $pixel->backoff($notifier['backoff'] ?? 15);
 
