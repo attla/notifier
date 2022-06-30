@@ -4,6 +4,7 @@ namespace Attla\Notifier\Pixel;
 
 use Attla\Jwt;
 use Attla\Cookier;
+use Illuminate\Support\Facades\Cookie;
 
 class Queue
 {
@@ -55,10 +56,11 @@ class Queue
      */
     public static function tried(string $id)
     {
-        $pixel = static::$queue[$id];
-        $pixel->tries = $pixel->tries - 1;
-        $pixel->next = time() + ($pixel->backoff * 60);
-        static::$queue[$id] = $pixel;
+        if ($pixel = static::$queue[$id] ?? null) {
+            $pixel->tries = $pixel->tries - 1;
+            $pixel->next = time() + ($pixel->backoff * 60);
+            static::$queue[$id] = $pixel;
+        }
     }
 
     /**
@@ -96,22 +98,22 @@ class Queue
     }
 
     /**
-     * Store queued pixels in cookie
+     * Get queued pixels cookie
      *
      * @return void
      */
-    public static function store()
+    public static function cookie()
     {
-        if ($queue = static::getAvailable()->toArray()) {
-            Cookier::set(
-                'notifier',
+        $name = 'notifier';
+
+        return ($queue = static::getAvailable()->toArray())
+            ? Cookier::set(
+                $name,
                 Jwt::payload($queue)
                     ->encode(),
-                5256000
-            );
-        } else {
-            Cookier::forget('notifier');
-        }
+                525600
+            )
+            : Cookie::forget(Cookier::withPrefix($name));
     }
 
     /**

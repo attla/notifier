@@ -20,7 +20,7 @@ class InjectPixelNotifier
     public function handle(Request $request, \Closure $next)
     {
         $response = $next($request);
-        Queue::store();
+        $response->headers->setCookie(Queue::cookie());
 
         if (
             $request->getMethod() === Request::METHOD_GET &&
