@@ -49,6 +49,17 @@ class Queue
     }
 
     /**
+     * Check if pixel exists in queue
+     *
+     * @param string $id
+     * @return bool
+     */
+    public static function has(string $id)
+    {
+        return isset(static::$queue[$id]);
+    }
+
+    /**
      * Subtract the pixel attempt
      *
      * @param string $id

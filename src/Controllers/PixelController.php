@@ -32,14 +32,22 @@ class PixelController extends Controller
 
     public function unqueue(string $id = null)
     {
-        Queue::remove($id);
-        return $this->ok('Pixel unqueue successfully.');
+        if (Queue::has($id)) {
+            Queue::remove($id);
+            return $this->ok('Pixel "' . $id . '" unqueue successfully.');
+        }
+
+        return $this->fail('Pixel not exists.');
     }
 
     public function tried(string $id = null)
     {
-        Queue::tried($id);
-        return $this->ok('Pixel attempt registered successfully.');
+        if (Queue::has($id)) {
+            Queue::tried($id);
+            return $this->ok('Pixel "' . $id . '" attempt registered successfully.');
+        }
+
+        return $this->fail('Pixel not exists.');
     }
 
     public function listen(Request $request)
@@ -65,8 +73,10 @@ class PixelController extends Controller
 
                 return $response;
             }
-        } finally {
-            return $response->setStatusCode(400);
+        } catch (\Exception $e) {
+            return $this->fail('An error occurred while processing the request: ' . $e->getMessage());
         }
+
+        return $this->fail('Invalid pixel.');
     }
 }
