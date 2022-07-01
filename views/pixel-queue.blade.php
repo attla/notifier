@@ -10,15 +10,24 @@
 <script>
 var notifier = {
     pixel: {
+        request(url){
+            fetch(url)
+                .then(response => {
+                    try {
+                        return response.json();
+                    } catch (e) {
+                        return {
+                            success: false,
+                            message: e.message,
+                        };
+                    }
+                }).then(data => console.log('%c🏓 Notifier: %c' + data.message, 'color:#7289DA', 'color:' + (data.success ? 'green' : 'red')));
+        },
         tried(id){
-            fetch('@route('notifier.pixel.tried')/' + id)
-                .then(response => response.json())
-                .then(data => console.log(data));
+            this.request('@route('notifier.pixel.tried')/' + id);
         },
         unqueue(id){
-            fetch('@route('notifier.pixel.unqueue')/' + id)
-                .then(response => response.json())
-                .then(data => console.log(data));
+            this.request('@route('notifier.pixel.unqueue')/' + id);
         }
     }
 }

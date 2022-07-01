@@ -34,7 +34,7 @@ class PixelController extends Controller
     {
         if (Queue::has($id)) {
             Queue::remove($id);
-            return $this->ok('Pixel "' . $id . '" unqueue successfully.');
+            return $this->ok('Pixel "' . $id . '" notified successfully.');
         }
 
         return $this->fail('Pixel does not exist.');
