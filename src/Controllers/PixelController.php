@@ -37,7 +37,7 @@ class PixelController extends Controller
             return $this->ok('Pixel "' . $id . '" unqueue successfully.');
         }
 
-        return $this->fail('Pixel not exists.');
+        return $this->fail('Pixel does not exist.');
     }
 
     public function tried(string $id = null)
@@ -47,7 +47,7 @@ class PixelController extends Controller
             return $this->ok('Pixel "' . $id . '" attempt registered successfully.');
         }
 
-        return $this->fail('Pixel not exists.');
+        return $this->fail('Pixel does not exist.');
     }
 
     public function listen(Request $request)
