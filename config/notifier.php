@@ -12,7 +12,7 @@ return [
     // The amount of times should be called before we give up.
     'tries' => 3,
     // This determines how many minutes there should be between attempts.
-    'backoff' => 15,
+    'backoff' => 20,
     // List of listeners to receive notifications
     'listeners' => [
         // 'pixel-id' => ListenerExample::class,

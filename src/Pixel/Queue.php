@@ -16,6 +16,18 @@ class Queue
     private static $queue = [];
 
     /**
+     * Load queued pixels from cookie
+     *
+     * @return void
+     */
+    public static function load()
+    {
+        static::$queue = collect(Cookier::get('notifier', []))
+            ->map(fn($pixel) => new QueueItem($pixel))
+            ->all();
+    }
+
+    /**
      * Add a pixel to queue
      *
      * @param string $id
@@ -30,22 +42,14 @@ class Queue
         int $tries,
         int $backoff
     ) {
+        $next = static::next($backoff);
+
         static::$queue[$id] =  new QueueItem(compact(
             'pixel',
             'tries',
-            'backoff'
+            'backoff',
+            'next'
         ));
-    }
-
-    /**
-     * Remove queued pixel
-     *
-     * @param string $id
-     * @return void
-     */
-    public static function remove(string $id)
-    {
-        unset(static::$queue[$id]);
     }
 
     /**
@@ -60,17 +64,15 @@ class Queue
     }
 
     /**
-     * Subtract the pixel attempt
+     * Remove queued pixel
      *
      * @param string $id
      * @return void
      */
-    public static function tried(string $id)
+    public static function remove(string $id)
     {
-        if ($pixel = static::$queue[$id] ?? null) {
-            $pixel->tries = $pixel->tries - 1;
-            $pixel->next = time() + ($pixel->backoff * 60);
-            static::$queue[$id] = $pixel;
+        if (static::has($id)) {
+            unset(static::$queue[$id]);
         }
     }
 
@@ -82,6 +84,32 @@ class Queue
     public static function all()
     {
         return static::$queue;
+    }
+
+    /**
+     * Subtract the pixel attempt
+     *
+     * @param string $id
+     * @return void
+     */
+    public static function tried(string $id)
+    {
+        if ($pixel = static::$queue[$id] ?? null) {
+            $pixel->tries = $pixel->tries - 1;
+            $pixel->next = static::next($pixel->backoff);
+            static::$queue[$id] = $pixel;
+        }
+    }
+
+    /**
+     * Get pixel next attempt
+     *
+     * @param int $backoff
+     * @return int
+     */
+    public static function next(int $backoff)
+    {
+        return time() + ($backoff * 60);
     }
 
     /**
@@ -125,17 +153,5 @@ class Queue
                 525600
             )
             : Cookie::forget(Cookier::withPrefix($name));
-    }
-
-    /**
-     * Load queued pixels from cookie
-     *
-     * @return void
-     */
-    public static function load()
-    {
-        static::$queue = collect(Cookier::get('notifier', []))
-            ->map(fn($pixel) => new QueueItem($pixel))
-            ->all();
     }
 }
