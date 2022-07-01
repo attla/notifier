@@ -42,13 +42,10 @@ class Queue
         int $tries,
         int $backoff
     ) {
-        $next = static::next($backoff);
-
         static::$queue[$id] =  new QueueItem(compact(
             'pixel',
             'tries',
-            'backoff',
-            'next'
+            'backoff'
         ));
     }
 
@@ -95,7 +92,7 @@ class Queue
     public static function tried(string $id)
     {
         if ($pixel = static::$queue[$id] ?? null) {
-            $pixel->tries = $pixel->tries - 1;
+            $pixel->tries--;
             $pixel->next = static::next($pixel->backoff);
             static::$queue[$id] = $pixel;
         }

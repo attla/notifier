@@ -40,5 +40,5 @@ class QueueItem extends \ArrayObject implements
      *
      * @var int
      */
-    public int $next;
+    public int $next = 0;
 }
