@@ -2,8 +2,8 @@
 
 namespace Attla\Notifier\Controllers;
 
+use App\Http\Controllers\Controller;
 use Attla\Jwt;
-use Attla\Controller;
 use Illuminate\Http\Request;
 use Attla\Notifier\Pixel\Queue;
 
