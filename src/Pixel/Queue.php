@@ -2,8 +2,8 @@
 
 namespace Attla\Notifier\Pixel;
 
-use Attla\Jwt;
-use Attla\Cookier;
+use Attla\Cookier\Facade as Cookier;
+use Attla\DataToken\Facade as DataToken;
 use Illuminate\Support\Facades\Cookie;
 
 class Queue
@@ -145,7 +145,7 @@ class Queue
         return ($queue = static::getAvailable()->toArray())
             ? Cookier::set(
                 $name,
-                Jwt::payload($queue)
+                DataToken::payload($queue)
                     ->encode(),
                 525600
             )

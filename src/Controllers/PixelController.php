@@ -3,7 +3,7 @@
 namespace Attla\Notifier\Controllers;
 
 use App\Http\Controllers\Controller;
-use Attla\Jwt;
+use Attla\DataToken\Facade as DataToken;
 use Illuminate\Http\Request;
 use Attla\Notifier\Pixel\Queue;
 
@@ -67,7 +67,7 @@ class PixelController extends Controller
 
             if (
                 $className = config('notifier.listeners.' . $request->id)
-                and $payload = Jwt::decode($request->payload)
+                and $payload = DataToken::decode($request->payload)
             ) {
                 new $className($payload);
 

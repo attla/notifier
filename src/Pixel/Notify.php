@@ -2,7 +2,7 @@
 
 namespace Attla\Notifier\Pixel;
 
-use Attla\Jwt;
+use Attla\DataToken\Facade as DataToken;
 
 class Notify
 {
@@ -195,7 +195,7 @@ class Notify
     {
         $params = http_build_query([
             'id' => $this->identifier ?: throw new \InvalidArgumentException('Pixel identifier is required.'),
-            'p' => Jwt::secret($this->secret)
+            'p' => DataToken::secret($this->secret)
                     ->payload($this->payload)
                     ->iss(parse_url($this->endpoint, PHP_URL_HOST))
                     ->bwr()
